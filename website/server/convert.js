@@ -133,6 +133,16 @@ function execute() {
       'src/react-native/' + metadata.permalink.replace(/\.html$/, '.js'),
       buildFile(layout, metadata, rawContent)
     );
+
+    if (metadata.layout === 'autodocs') {
+      var output = Object.assign({
+        metadata: metadata,
+      }, JSON.parse(rawContent));
+
+      mkdirp.sync('src/json/docs');
+      fs.writeFileSync('src/json/' + metadata.permalink.replace(/\.html$/, '.json'), JSON.stringify(output, null, 2));
+    }
+
   }
 
   extractDocs().forEach(function(content) {
